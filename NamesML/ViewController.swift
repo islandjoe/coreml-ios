@@ -45,6 +45,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
   }
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    genderLabel.text = predictGenderFromName( textField.text! )
+    
     return true
   }
   
