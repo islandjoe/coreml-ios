@@ -33,6 +33,17 @@ class ViewController: UIViewController, UITextFieldDelegate {
   
   }
   
+  func predictGenderFromName(_ name: String) -> String? {
+    let nameFeatures = features(name)
+    let model = GenderByName()
+    
+    if let prediction = try? model.prediction(input: nameFeatures) {
+      return (prediction.classLabel == "F") ? "Female" : "Male"
+    }
+    
+    return nil
+  }
+  
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     return true
   }
