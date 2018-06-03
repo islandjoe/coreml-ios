@@ -45,9 +45,9 @@ pipeline.fit(X_train, y_train)
 
 # Testing
 # ['M' 'F']
-print pipeline.predict(features(["Arthur", "Annika"]))     
-print pipeline.score(X_train, y_train)
-print pipeline.score(X_test, y_test)
+print( pipeline.predict(features(["Arthur", "Annika"])) )
+print( pipeline.score(X_train, y_train) )
+print( pipeline.score(X_test, y_test) )
 
 # Convert to CoreML model
 coreml_model = coremltools.converters.sklearn.convert(pipeline)
