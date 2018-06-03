@@ -7,7 +7,7 @@ from sklearn.pipeline import Pipeline
 import coremltools
 
 names = pd.read_csv('namesDataset.csv')
-names = names.as_matrix()[:, 1:]
+names = names.values[:, 1:]
 
 # 80% reserved for training
 TRAIN_SPLIT = 0.8
