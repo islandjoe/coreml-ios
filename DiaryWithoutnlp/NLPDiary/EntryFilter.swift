@@ -26,13 +26,29 @@ class EntryFilter {
   fileprivate func setOfWords(string: String, language: inout String?) -> Set<String> {
     var wordSet: Set<String> = []
     
-    string.enumerateSubstrings(in: string.startIndex ..< string.endIndex, options: .byWords)
-    { (word, _, _, _) in
-      
-      guard let word = word else { return }
-      wordSet.insert( word.lowercased() )
+    let tagger = NSLinguisticTagger(tagSchemes: [.lemma, .language], options: 0)
+    let range  = NSRange(location: 0, length: string.utf16.count)
+    
+    tagger.string = string
+    
+    if let language = language {
+      let ortography = NSOrthography.defaultOrthography(forLanguage: language)
+      tagger.setOrthography(ortography, range: range)
+    } else {
+      language = tagger.dominantLanguage
     }
-  
+    
+    tagger.enumerateTags(in: range, unit: .word, scheme: .lemma, options: [.omitWhitespace, .omitPunctuation]) {
+      (tag, tokenRange, _) in
+      
+      let token = (string as NSString).substring(with: tokenRange)
+      wordSet.insert( token.lowercased() )
+      
+      if let lemma = tag?.rawValue {
+        wordSet.insert( lemma.lowercased() )
+      }
+    }
+    
     return wordSet
   }
     
